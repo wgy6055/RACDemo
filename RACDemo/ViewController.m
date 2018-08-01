@@ -168,53 +168,66 @@
 //        NSLog(@"flatten: %@", x);
 //    }];
     // map: 把 signal 映射成 id
-    RACSignal *signalMap = [signal0 map:^id _Nullable(NSString * _Nullable value) {
-        return [NSString stringWithFormat:@"map: %@", value];
+//    RACSignal *signalMap = [signal0 map:^id _Nullable(NSString * _Nullable value) {
+//        return [NSString stringWithFormat:@"map: %@", value];
+//    }];
+//    [signalMap subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"map: %@", x);
+//    }];
+//    // flattenMap: 把 signal 映射成 signal
+//    RACSignal *signalFlattenMap = [signal0 flattenMap:^__kindof RACSignal * _Nullable(NSString * _Nullable value) {
+//        return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
+//            [subscriber sendNext:[NSString stringWithFormat:@"flattenMap: %@", value]];
+//            return nil;
+//        }];
+//    }];
+//    [signalFlattenMap subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"flattenMap: %@", x);
+//    }];
+//    // mapReplace
+//    [[signal0 mapReplace:[NSString stringWithFormat:@"mapReplace"]] subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"mapReplace: %@", x);
+//    }];
+//    // filter
+//    [[signal0 filter:^BOOL(NSString * _Nullable value) {
+//        return [value isEqualToString:@"2"];
+//    }] subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"filter: %@", x);
+//    }];
+//    // reduceEach
+//    [[signalTuple reduceEach:^id(NSString *letter, NSString *number) {
+//        return [NSString stringWithFormat:@"(%@, %@)", letter, number];
+//    }] subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"reduceEach: %@", x);
+//    }];
+//    // startWith
+//    [[signal0 startWith:@"startWith"] subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"startWith: %@", x);
+//    }];
+//    // scan
+//    [[signal0 scanWithStart:@"scan" reduce:^id _Nullable(NSString * _Nullable running, NSString * _Nullable next) {
+//        return [NSString stringWithFormat:@"%@, %@", running, next];
+//    }] subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"scan: %@", x);
+//    }];
+//    // combinePrevious
+//    [[signal0 combinePreviousWithStart:@"combinePrevious" reduce:^id _Nullable(NSString * _Nullable previous, NSString * _Nullable current) {
+//        return [NSString stringWithFormat:@"%@, %@", previous, current];
+//    }] subscribeNext:^(NSString * _Nullable x) {
+//        NSLog(@"combikePrevious: %@", x);
+//    }];
+    RACSignal *signalLazy = [RACSignal startLazilyWithScheduler:[RACScheduler mainThreadScheduler] block:^(id<RACSubscriber>  _Nonnull subscriber) {
+        NSLog(@"signalLazy");
+        [subscriber sendNext:@"a"];
+        [subscriber sendNext:@"b"];
+        [subscriber sendNext:@"c"];
+//        [subscriber sendCompleted];
     }];
-    [signalMap subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"map: %@", x);
+    [signalLazy subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"lazySignal: %@", x);
     }];
-    // flattenMap: 把 signal 映射成 signal
-    RACSignal *signalFlattenMap = [signal0 flattenMap:^__kindof RACSignal * _Nullable(NSString * _Nullable value) {
-        return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber>  _Nonnull subscriber) {
-            [subscriber sendNext:[NSString stringWithFormat:@"flattenMap: %@", value]];
-            return nil;
-        }];
-    }];
-    [signalFlattenMap subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"flattenMap: %@", x);
-    }];
-    // mapReplace
-    [[signal0 mapReplace:[NSString stringWithFormat:@"mapReplace"]] subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"mapReplace: %@", x);
-    }];
-    // filter
-    [[signal0 filter:^BOOL(NSString * _Nullable value) {
-        return [value isEqualToString:@"2"];
-    }] subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"filter: %@", x);
-    }];
-    // reduceEach
-    [[signalTuple reduceEach:^id(NSString *letter, NSString *number) {
-        return [NSString stringWithFormat:@"(%@, %@)", letter, number];
-    }] subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"reduceEach: %@", x);
-    }];
-    // startWith
-    [[signal0 startWith:@"startWith"] subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"startWith: %@", x);
-    }];
-    // scan
-    [[signal0 scanWithStart:@"scan" reduce:^id _Nullable(NSString * _Nullable running, NSString * _Nullable next) {
-        return [NSString stringWithFormat:@"%@, %@", running, next];
-    }] subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"scan: %@", x);
-    }];
-    // combinePrevious
-    [[signal0 combinePreviousWithStart:@"combinePrevious" reduce:^id _Nullable(NSString * _Nullable previous, NSString * _Nullable current) {
-        return [NSString stringWithFormat:@"%@, %@", previous, current];
-    }] subscribeNext:^(NSString * _Nullable x) {
-        NSLog(@"combikePrevious: %@", x);
+    [signalLazy subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"lazySignal: %@", x);
     }];
 }
 
